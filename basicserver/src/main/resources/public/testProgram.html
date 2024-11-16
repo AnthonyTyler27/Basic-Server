@@ -110,7 +110,7 @@
     <script>
         var count = 0;
         document.getElementById('send').addEventListener('click', function () {
-            const ip = document.getElementById('ip').value || 'localhost';
+            const ip = document.getElementById('ip').value || window.location.hostname;
             const username = document.getElementById('username').value || 'Anonymous';
             const message = document.getElementById('message').value;
 
@@ -123,16 +123,7 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ username: username, message: message })
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        const chat = document.getElementById('chat');
-                        const newMessage = document.createElement('div');
-                        newMessage.textContent = `${data.username}: ${data.message}`;
-                        chat.appendChild(newMessage);
-                        document.getElementById('message').value = '';
-                    })
-                    .catch(error => console.error('Error:', error));
+                });
             }
         });
 
@@ -165,7 +156,7 @@
         }
 
         function fetchMessages() {
-            const ip = document.getElementById('ip').value || 'localhost';
+            const ip = document.getElementById('ip').value || window.location.hostname;
             fetch(`http://${ip}:4567/messages`)
                 .then(response => response.json())
                 .then(data => {

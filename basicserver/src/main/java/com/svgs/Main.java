@@ -2,20 +2,16 @@ package com.svgs;
 
 import static spark.Spark.*;
 
-import java.util.ArrayList;
-
-import com.google.gson.Gson;
-
 public class Main {
-    public static ArrayList<Message> messages = new ArrayList<Message>();
 
     public static void main(String[] args) {
-        port(4567);
-        ipAddress("0.0.0.0");
+        disableCORS();
 
-        staticFiles.location("/public");
         
-        /*
+
+    }
+
+    public static void disableCORS() {
         before((req, res) -> {
             res.header("Access-Control-Allow-Origin", "*");
             res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
@@ -35,27 +31,5 @@ public class Main {
 
             return "OK";
         });
-        */
-
-        Gson gson = new Gson();
-
-        get("/", (req, res) -> {
-            res.redirect("/testProgram.html");
-            return null;
-        });
-
-        get("/messages", (req, res) -> {
-            res.type("application/json");
-            return gson.toJson(messages);
-        });
-
-        post("/send", (req, res) -> {
-            res.type("application/json");
-            Message message = gson.fromJson(req.body(), Message.class);
-            messages.add(message);
-            res.status(201);
-            return "";
-        });
-
     }
 }
